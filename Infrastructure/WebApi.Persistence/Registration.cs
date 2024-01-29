@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WebApi.Application.Interfaces.Repositories;
 using WebApi.Persistence.Context;
+using WebApi.Persistence.Repositories;
 
 namespace WebApi.Persistence
 {
@@ -17,6 +19,7 @@ namespace WebApi.Persistence
             services.AddDbContext<AppDbContext>(opt =>
             opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
         }
     }
 }
