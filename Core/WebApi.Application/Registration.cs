@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using System;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WebApi.Application.Behaviors;
 using WebApi.Application.Exceptions;
 
 namespace WebApi.Application
@@ -20,7 +22,12 @@ namespace WebApi.Application
 
             services.AddTransient<ExceptionMiddleware>();
 
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));       
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+
+            services.AddValidatorsFromAssembly(assembly);
+            ValidatorOptions.Global.LanguageManager.Culture=new CultureInfo("tr");
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(FluentValidationBehavior<,>));
         }
     }
 }
