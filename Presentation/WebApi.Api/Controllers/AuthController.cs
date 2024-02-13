@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Application.Features.Auth.Command.Login;
 using WebApi.Application.Features.Auth.Command.Register;
 
 namespace WebApi.Api.Controllers
@@ -21,6 +22,13 @@ namespace WebApi.Api.Controllers
         {
             await mediator.Send(request);
             return StatusCode(StatusCodes.Status201Created);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginCommandRequest request)
+        {
+            var response= await mediator.Send(request);
+            return StatusCode(StatusCodes.Status200OK,response);
         }
     }
 }
